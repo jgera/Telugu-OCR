@@ -1,0 +1,1 @@
+function newX=constructstruct(strokegroup)
