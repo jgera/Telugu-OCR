@@ -5,7 +5,7 @@ colorc=1;
 colors=['r','g','b','y','m'];
 % y=[];
 nstrokearray=[];
-
+Xnew=X;
 v=1;
 for v=1:10
     m=1;
@@ -21,7 +21,11 @@ for v=1:10
     
        segchar=1;
     
-    c=2*v;
+    if mod(v,10) == 0
+        c=20;
+    else
+        c=2*mod(v,10);
+    end
     subplot(5,4,c-1)
     hold on
     for p=1:length(nstrokearray)
@@ -37,7 +41,7 @@ for v=1:10
     
     
     csg.stroke(1).points=nstrokearray(1).points;
-    
+    concat.stroke(1).points=csg.stroke(1).points;
     nstrokearray(1)=[];
     
     minx=[];
@@ -52,24 +56,25 @@ for v=1:10
     
     for i=1:length(nstrokearray)
         
-        val1=isabove(nstrokearray(i),csg.stroke(1)); %Checking if the stroke is a top stroke
+        val1=isabove(nstrokearray(i),concat.stroke(1)); %Checking if the stroke is a top stroke
         if val1==1
             csg.stroke=[csg.stroke nstrokearray(i)];
-            
+            concat.stroke(1).points = vertcat(concat.stroke(1).points,nstrokearray(i).points);
         end
         
-        val2=isbelow(nstrokearray(1),csg.stroke(1)); %Checking if the stroke is a bottom stroke
+        val2=isbelow(nstrokearray(1),concat.stroke(1)); %Checking if the stroke is a bottom stroke
         if val2==1
             csg.stroke=[csg.stroke nstrokearray(i)];
-           
+            concat.stroke(1).points = vertcat(concat.stroke(1).points,nstrokearray(i).points);
         end
         
         
-        val3=isauxormain(nstrokearray(i),csg.stroke(1));
+        val3=isauxormain(nstrokearray(i),concat.stroke(1));
         if val3==1
-            Baux=isBaux(nstrokearray(i));    %Checking if the stroke is a baseline auxiliary stroke
+            Baux=isBaux(nstrokearray(i),concat.stroke(1));    %Checking if the stroke is a baseline auxiliary stroke
             if Baux==1
                 csg.stroke=[csg.stroke nstrokearray(i)];
+                concat.stroke(1).points = vertcat(concat.stroke(1).points,nstrokearray(i).points);
                 val4=0;
                 apoint=csg.stroke(1).points;
                bpoint=nstrokearray(i).points;
@@ -119,15 +124,18 @@ for v=1:10
                 segchar=segchar+1;
                 % newXstrokearray=cat(1,newXstrokearray,csg.stroke);
                 csg.stroke(:)=[];
+                concat.stroke(:)=[];
                 csg.stroke(1)=nsg;
+                concat.stroke(1)=nsg;
                 if indx >=1
-                   for ind3=1:indx
+                  
+                end
+                for ind3=1:indx
                     neglectedval=checkstrayobject(unclassified.stroke(ind3),nsg);
                                         
                     if neglectedval==1
                         csg.stroke=[csg.stroke unclassified.stroke(indx)];
                     end
-                   end
                 end
                 
             end
@@ -135,6 +143,15 @@ for v=1:10
         else 
             indx=indx+1;
             unclassified.stroke(indx)=nstrokearray(i);
+              if i == length(nstrokearray)
+                for ind3=1:indx
+                        neglectedval=checkstrayobject(nsg,unclassified.stroke(ind3));
+                                        
+                        if neglectedval==1
+                            csg.stroke=[csg.stroke unclassified.stroke(indx)];
+                        end
+                    end
+              end
         end
         hold on;
         subplot(5,4,c)
@@ -146,9 +163,15 @@ for v=1:10
         hold off;
         
         if i == length(nstrokearray)
+            
             csg.stroke(:)=[];
             nstrokearray(:)=[];
+            
         end
+    end
+    if mod(v,10) == 0
+        % pause
+        clf
     end
 end
 

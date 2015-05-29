@@ -1,8 +1,10 @@
 function y=isoverlapping(stroke1,stroke2)
-minx1=min(stroke1.points(:,1));
-maxx1=max(stroke1.points(:,1));
-minx2=min(stroke2.points(:,1));
-maxx2=max(stroke2.points(:,1));
+assert(isa(stroke1,'double'));
+assert(isa(stroke2,'double'));
+minx1=min(stroke1(:,1));
+maxx1=max(stroke1(:,1));
+minx2=min(stroke2(:,1));
+maxx2=max(stroke2(:,1));
 if(minx1<minx2)
     
         a=maxx1-minx2;
@@ -18,7 +20,8 @@ else
 end
 if c>0        %there should be atleast 20%overlap--threshold
     y=1;
-else y=0;
+else
+    y=0;
 end
 end
 

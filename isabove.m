@@ -9,7 +9,7 @@ if isoverlapping(stroke1,stroke2)
        %     y=0;
        % end
    % else
-        if min(stroke1.points(:,2))>(max(stroke2.points(:,2))-0.7*(range(stroke2.points(:,2))))
+        if min(stroke1.points(:,2))>(max(stroke2.points(:,2))-0.2*(range(stroke2.points(:,2))))
             y=1;
         else
             y=0;

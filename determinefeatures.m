@@ -22,18 +22,18 @@ end
 for i=1:index-1
     
     if bauxpoints(i,1)<0 && bauxpoints(i,2)<=0
-        if abs(bauxpoints(i,1))>=abs(2*bauxpoints(i,2))   % negative so comparing sign will be opposite
+        %if abs(bauxpoints(i,1))>=abs(2*bauxpoints(i,2))   % negative so comparing sign will be opposite
             y1=1;
-        else
+    else
             y1=0;
-        end
+    %    end
     end
     if bauxpoints(i,1)>=0 && bauxpoints(i,2)<=0                          %this complete part includes that points should lie with the specified range.(we have taken 225 to 330 degree range)
-        if abs(bauxpoints(i,1))<=abs(2*abs(bauxpoints(i,2)));
+    %    if abs(bauxpoints(i,1))<=abs(2*abs(bauxpoints(i,2)));
             y1=1;
-        else
+    else
             y1=0;
-        end
+    %    end
     end
         
     
@@ -49,7 +49,7 @@ else
         y2=0;
 end
 
-if y1==1 || y2==1
+if y1==1 && y2==1
     y=1;
 else
     y=0;
